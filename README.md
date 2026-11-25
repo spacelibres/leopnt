@@ -1,6 +1,6 @@
-# LEOPNT · Starlink 机会导航计算
+# LEOPNT · 低轨卫星机会导航
 
-中文 Next.js + TypeScript + Three.js 网站。仅针对真实 Starlink 轨道根数进行 SGP4 传播、可见性、预测多普勒和条件化多星几何分析。旧合成星座已完全移除。
+中文 Next.js + TypeScript + Three.js 网站，正式域名为 https://leopnt.net 。首页介绍低轨导航的未来价值、厘米级定位的实现路径与应用场景；工具仅针对真实 Starlink 轨道根数进行 SGP4 传播与几何分析。厘米级内容描述有条件的研究潜力与未来方向，不代表本站已经交付的定位精度。
 
 ## 运行
 
@@ -41,10 +41,12 @@ npm run catalog:sync -- --snapshot
 
 ## 页面与 API
 
-- `/`：Starlink 全量点云、上海站指标和未来一小时窗口。
+- `/`：面向公众的低轨导航介绍、厘米级定位愿景、三条发展路径、四类应用、实现条件、研究依据与常见问题，附真实 Starlink 三维视图；首页不自动执行窗口分析。
 - `/console`：可旋转缩放地球、全量有效卫星点云、搜索与选择 Starlink、选中卫星 SGP4 轨迹、时间轴、播放倍速、方位/仰角/斜距和预测多普勒。搜索下拉仅显示前80个匹配，点云和分析不抽样卫星。
 - `/opportunities`：城市或自定义经纬度、WGS84 椭球高、绝对开始时间、时间跨度、最低仰角、研究载频、采样步长；全量 Worker 分析、进度与取消、几何报告、搜索分页、本地任务与 CSV/JSON 导出。保存的是参数；重开用当前目录重算，导出才是当次完整结果。
-- `/technology`、`/docs`：计算链路、公式、来源、局限与可运行 API。
+- `/technology`：智能出行、智慧农业、机器人与低空、测绘与基础设施等未来应用。
+- `/docs`：计算链路、公式、来源、局限与可运行 API。
+- `/sitemap.xml`、`/robots.txt`：使用正式域名 leopnt.net；各页面包含规范地址与中文分享元信息。
 - `GET /api/starlink/catalog`：Starlink 全目录与元数据。无数据503。
 - `GET /api/starlink/opportunities?lat=31.2304&lon=121.4737&minutes=15&minElevation=10&frequencyGHz=12&stepSeconds=60`：完整分析。`start` 可为带时区的 ISO8601 时间；省略使用请求时刻。非法参数400、忙429、无数据503。
 - 旧 `/api/demo/*` 返回410，不再提供合成轨道。
@@ -79,3 +81,9 @@ npx tsx scripts/verify-starlink.ts
 - [CelesTrak GP格式说明](https://celestrak.org/NORAD/documentation/gp-data-formats.php)、[findstarlink镜像](https://github.com/findstarlink/data)：真实轨道数据。
 - [spacelibre VI](https://github.com/spacelibres/vi)：批准的SVG几何与完整配色角色，白色字标保持单色，产品名称为LEOPNT。
 - world-atlas / Natural Earth：公共领域地理轮廓，运行时本地加载；lucide-react：ISC图标。本站不是SpaceX或Starlink官方服务。
+
+## 视觉规范
+
+采用 [spacelibre VI](https://vi.spacelibre.cn/) 官方源仓库 **1.5.34**、01-electric-orbit 完整16角色配色、批准的图标/单色字标与连续渐隐轨道构图。首页和应用页支持深浅主题，工具区使用相同配色的深色布局；产品名称统一为大写 LEOPNT。
+
+官方素材随项目本地提供，页面运行不请求 VI 网站。维护时可手动运行 `npm run vi:sync`（只接受核对过的 1.5.34 版本），再执行 `npm run vi:prepare` 生成背景适配图标与轨道素材。来源、对比度和渲染检查见 `docs/vi-verification.md`。正式域名已写入代码，DNS、TLS 与公网部署需要在托管环境配置。

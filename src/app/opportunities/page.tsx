@@ -1,3 +1,4 @@
 import { Analysis } from '@/components/analysis';
-export const metadata = { title: '机会窗口分析' };
+import {pageMetadata} from '@/lib/site';
+export const metadata = pageMetadata('/opportunities','机会窗口分析');
 export default function Opportunities() { return <Analysis/>; }

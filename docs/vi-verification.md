@@ -1,0 +1,43 @@
+# LEOPNT 0.1.5 视觉与首页验收
+
+日期：2026-11-25。正式域名：`https://leopnt.net`。
+
+## 规范与素材
+
+- 使用用户指定的 spacelibre VI skill 和官方 `spacelibres/vi` 源仓库 1.5.34，01-electric-orbit 预设的完整16角色。网页端规范读取超时，因此依据官方源文件核对，未声称已逐页检查线上规范网站。
+- 原始素材与版本存于 `public/brand/`、`docs/vi-reference/`。标志几何、路径、变换、遮罩不重绘。
+- 全彩图标按背景生成：浅底 planet #E00400 / orbit #006CE0；深底 planet #FF3733 / orbit #007BFF。页签图标随当前主题切换。
+- 白色与海军蓝完整字标保持原始单色；分别在深浅背景使用，未混入辅助色。完整字标显示宽240px并保留外部留白。
+- 连续轨道由官方 website-hero SVG 的构图和对应渐变/遮罩定义直接提取，装饰置于正文后方，主视觉允许容器边缘出血。
+- Arial/Arial Bold、中文系统字体与 Consolas 元数据；公共页使用横向导航、24px主要圆角与8px间距节奏。
+
+## 实际渲染
+
+- 1280px桌面：检查首页整页、深浅主题、真实地球、场景、发展路径、前提条件、研究展开、FAQ、页脚。
+- 390×844手机：检查首页首屏、阅读区、导航展开、应用页。宽度390时 document.scrollWidth为375（滚动条占15px），无横向溢出。
+- 主题切换后，全彩图标使用相应背景版本；页脚字标切换官方白/海军蓝原稿。无 console error/warn。
+- 检查工具页三维地球、面板、侧栏标志、版本与统一深色角色。星历状态常驻横幅未恢复。
+- 研究说明展开后可读到4条原始研究/机构来源；明确可行性仿真、真实GNSS+模拟LEO与在轨探索各自条件。FAQ展开正常。
+- 首页保留真实Starlink三维视图，不自动运行窗口分析。所有计算依旧限定Starlink；网页/后台仍仅从本地加载目录。
+
+## 关键对比度
+
+| 前景 / 背景 | 对比度 |
+| --- | --- |
+| ink / surface | 13.31:1 |
+| muted / card | 4.92:1 |
+| muted / surface | 4.57:1 |
+| primaryOnLight / card | 4.88:1 |
+| surface / deep | 16.50:1 |
+| planetOnDark / deep | 5.03:1 |
+| planetOnLight / surface | 4.58:1 |
+| accent / deep | 15.78:1 |
+
+以上按sRGB相对亮度计算。另核对单色SVG的显式fill/stroke：白色保持#FFFFFF，海军蓝保持#002044，结构遮罩除外。
+
+## 代码与域名
+
+- 13项现有核心测试通过，包括无自动下载的回归测试。
+- TypeScript检查、Next.js生产构建通过。
+- 本地HTTP逐一核对5个页面返回200，canonical与og:url为leopnt.net下对应路径；sitemap与robots返回200并使用同一域名。
+- 仅完成项目内域名配置；未修改DNS、TLS或部署公网。

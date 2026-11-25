@@ -1,3 +1,4 @@
 import { Technology } from '@/components/information';
-export const metadata = { title: '技术与应用' };
+import {pageMetadata} from '@/lib/site';
+export const metadata = pageMetadata('/technology','应用与未来');
 export default function Page() { return <Technology/>; }

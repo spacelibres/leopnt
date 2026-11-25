@@ -1,3 +1,4 @@
 import { Documentation } from '@/components/information';
-export const metadata = { title: '开发者文档' };
+import {pageMetadata} from '@/lib/site';
+export const metadata = pageMetadata('/docs','开发者文档');
 export default function Page() { return <Documentation/>; }

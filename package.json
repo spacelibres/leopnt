@@ -1,6 +1,6 @@
 {
   "name": "leopnt",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "private": true,
   "engines": {
     "node": ">=22.19.0"
@@ -12,7 +12,9 @@
     "typecheck": "tsc --noEmit",
     "test": "tsx --test tests/*.test.ts",
     "catalog:sync": "tsx scripts/catalog.ts sync",
-    "catalog:import": "tsx scripts/catalog.ts import"
+    "catalog:import": "tsx scripts/catalog.ts import",
+    "vi:sync": "tsx scripts/sync-vi.mts",
+    "vi:prepare": "node scripts/prepare-vi.mjs"
   },
   "dependencies": {
     "lucide-react": "^1.80.0",
