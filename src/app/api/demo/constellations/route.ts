@@ -1,2 +1,1 @@
-import { constellationInfo, satellites, EPOCH } from '@/lib/orbits';
-export function GET(){return Response.json({dataMode:'synthetic-demo',epoch:new Date(EPOCH).toISOString(),constellations:constellationInfo,satellites});}
+export function GET(){return Response.json({error:'合成星座已移除，请使用 /api/starlink/catalog'},{status:410});}

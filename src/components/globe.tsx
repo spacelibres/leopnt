@@ -2,9 +2,9 @@
 import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
-import { EARTH_RADIUS, satellites, satellitePosition, surfacePosition, orbitalPeriod, type Satellite } from '@/lib/orbits';
+import {EARTH_RADIUS,scenePosition,surfacePosition,isFresh,type OrbitRecord} from '@/lib/starlink';
 
-type Props = { seconds:number; constellation:string; selected:string; showOrbits:boolean; zoom:number; onSelect:(id:string)=>void; interactive?:boolean };
+type Props={time:number;records:OrbitRecord[];selected:number|null;showOrbits:boolean;zoom:number;onSelect:(id:number)=>void;interactive?:boolean};
 export function Globe(props: Props) {
   const container = useRef<HTMLDivElement>(null);
   const latest = useRef(props);
@@ -17,7 +17,7 @@ export function Globe(props: Props) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio,1.8));
     renderer.setClearColor(0x000000,0);
     host.appendChild(renderer.domElement);
-    renderer.domElement.setAttribute('aria-label','可拖动旋转和缩放的三维地球与演示卫星轨道');
+    renderer.domElement.setAttribute('aria-label','真实 Starlink 全量卫星点云与选中卫星 SGP4 轨迹');
     const scene=new THREE.Scene();
     const camera=new THREE.PerspectiveCamera(40,1,0.1,100);
     camera.position.copy(new THREE.Vector3(...surfacePosition(24,108,3.8)));
@@ -51,39 +51,39 @@ export function Globe(props: Props) {
       ctx.save();ctx.clip(paths,'evenodd');ctx.fillStyle='#4693a6';for(let x=0;x<2048;x+=7)for(let y=0;y<1024;y+=7){ctx.globalAlpha=0.32;ctx.fillRect(x,y,1.4,1.4);}ctx.restore();
       landTexture=new THREE.CanvasTexture(canvas);landTexture.colorSpace=THREE.SRGBColorSpace;earthMaterial.map=landTexture;earthMaterial.color.set(0xffffff);earthMaterial.needsUpdate=true;
     }).catch((error)=>{if(error.name!=='AbortError')console.warn('本地地理轮廓未载入，使用网格地球。');});
-    const orbitGroup=new THREE.Group();scene.add(orbitGroup);
-    const orbitLines: {line:THREE.Line;sat:Satellite}[]=[];
-    satellites.filter((_,i)=>i%4===0).forEach(sat=>{
-      const points=Array.from({length:181},(_,j)=>new THREE.Vector3(...satellitePosition(sat,j/180*orbitalPeriod(sat.altitude))).divideScalar(EARTH_RADIUS));
-      const line=new THREE.Line(new THREE.BufferGeometry().setFromPoints(points),new THREE.LineBasicMaterial({color:sat.color,transparent:true,opacity:0.28}));orbitGroup.add(line);orbitLines.push({line,sat});
-    });
-    const dotGeo=new THREE.SphereGeometry(0.009,8,8);
-    const meshes=satellites.map(sat=>{
-      const mesh=new THREE.Mesh(dotGeo,new THREE.MeshBasicMaterial({color:sat.color}));mesh.userData.id=sat.id;scene.add(mesh);return {mesh,sat};
-    });
+    const records=props.records;
+    const positions=new Float32Array(records.length*3);
+    const dotsGeo=new THREE.BufferGeometry();dotsGeo.setAttribute('position',new THREE.BufferAttribute(positions,3));
+    const dots=new THREE.Points(dotsGeo,new THREE.PointsMaterial({color:0x58a6ff,size:.009,transparent:true,opacity:.85,sizeAttenuation:true}));dots.frustumCulled=false;scene.add(dots);
+    const tracePositions=new Float32Array(181*3),traceGeo=new THREE.BufferGeometry();traceGeo.setAttribute('position',new THREE.BufferAttribute(tracePositions,3));traceGeo.setDrawRange(0,0);
+    const trace=new THREE.Line(traceGeo,new THREE.LineBasicMaterial({color:0xf4f764,transparent:true,opacity:.65}));trace.frustumCulled=false;scene.add(trace);
     const marker=new THREE.Mesh(new THREE.RingGeometry(.022,.032,32),new THREE.MeshBasicMaterial({color:0xf4f764,side:THREE.DoubleSide}));scene.add(marker);
     const station=new THREE.Mesh(new THREE.SphereGeometry(.011,12,12),new THREE.MeshBasicMaterial({color:0xf4f764}));station.position.set(...surfacePosition(31.23,121.47,1.012));scene.add(station);
-    const raycaster=new THREE.Raycaster();const pointer=new THREE.Vector2();let pointerStart=[0,0];
+    const raycaster=new THREE.Raycaster();raycaster.params.Points.threshold=.009;const pointer=new THREE.Vector2();let pointerStart=[0,0];
     const down=(event:PointerEvent)=>{pointerStart=[event.clientX,event.clientY];};
     const click=(event:PointerEvent)=>{
       if(Math.hypot(event.clientX-pointerStart[0],event.clientY-pointerStart[1])>5)return;
       const box=host.getBoundingClientRect();pointer.set((event.clientX-box.left)/box.width*2-1,-(event.clientY-box.top)/box.height*2+1);raycaster.setFromCamera(pointer,camera);
-      const hit=raycaster.intersectObjects(meshes.filter(m=>m.mesh.visible).map(m=>m.mesh))[0];if(hit)latest.current.onSelect(hit.object.userData.id);
+      const hit=raycaster.intersectObjects([earth,dots])[0];if(hit?.object===dots&&hit.index!==undefined)latest.current.onSelect(records[hit.index].noradId);
     };
     renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointerup',click);
     const resize=new ResizeObserver(()=>{const {width,height}=host.getBoundingClientRect();if(width&&height){renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();}});resize.observe(host);
-    let frame=0, previousZoom=latest.current.zoom;let last=0;
+    let frame=0,previousZoom=latest.current.zoom,lastTime=NaN,lastSelected:number|null=null,lastTrace=NaN;let last=0;
     const animate=(now:number)=>{
       frame=requestAnimationFrame(animate);if(now-last<30)return;last=now;
       const p=latest.current;
       if(p.zoom!==previousZoom){camera.position.multiplyScalar(Math.pow(.85,p.zoom-previousZoom));camera.position.clampLength(2.5,6.5);previousZoom=p.zoom;}
-      meshes.forEach(({mesh,sat})=>{mesh.position.set(...satellitePosition(sat,p.seconds));mesh.position.divideScalar(EARTH_RADIUS);mesh.visible=p.constellation==='全部'||p.constellation===sat.constellation;mesh.scale.setScalar(p.selected===sat.id?1.9:1);if(p.selected===sat.id){marker.position.copy(mesh.position);marker.lookAt(camera.position);marker.visible=mesh.visible;}});
-      orbitGroup.visible=p.showOrbits;orbitGroup.rotation.y=-p.seconds*2*Math.PI/86164;
-      orbitLines.forEach(({line,sat})=>{line.visible=p.constellation==='全部'||p.constellation===sat.constellation;});
+      if(p.time!==lastTime){records.forEach((r,i)=>{const pos=isFresh(r,p.time)?scenePosition(r,p.time):null;positions[i*3]=pos?pos[0]/EARTH_RADIUS:0;positions[i*3+1]=pos?pos[1]/EARTH_RADIUS:0;positions[i*3+2]=pos?pos[2]/EARTH_RADIUS:0;});dotsGeo.attributes.position.needsUpdate=true;lastTime=p.time;}
+      const selected=records.find(r=>r.noradId===p.selected),selectedPosition=selected&&isFresh(selected,p.time)?scenePosition(selected,p.time):null;
+      marker.visible=Boolean(selectedPosition);if(selectedPosition){marker.position.set(...selectedPosition).divideScalar(EARTH_RADIUS);marker.lookAt(camera.position);}
+      trace.visible=p.showOrbits&&Boolean(selectedPosition);
+      if(selected&&(lastSelected!==p.selected||Math.abs(p.time-lastTrace)>30000)){
+        let count=0;for(let j=0;j<=180;j++){const t=p.time+j/180*(86400000/selected.meanMotion),pos=scenePosition(selected,t);if(!pos)break;tracePositions[count*3]=pos[0]/EARTH_RADIUS;tracePositions[count*3+1]=pos[1]/EARTH_RADIUS;tracePositions[count*3+2]=pos[2]/EARTH_RADIUS;count++;}traceGeo.attributes.position.needsUpdate=true;traceGeo.setDrawRange(0,count);lastSelected=p.selected;lastTrace=p.time;
+      }
       controls.update();renderer.render(scene,camera);
     };frame=requestAnimationFrame(animate);setState('ready');
-    return ()=>{abort.abort();cancelAnimationFrame(frame);resize.disconnect();controls.dispose();renderer.domElement.removeEventListener('pointerdown',down);renderer.domElement.removeEventListener('pointerup',click);scene.traverse(obj=>{if(obj instanceof THREE.Mesh||obj instanceof THREE.Line){obj.geometry.dispose();const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach((m:THREE.Material)=>m.dispose());}});landTexture?.dispose();renderer.dispose();renderer.domElement.remove();};
-  },[]);
+    return ()=>{abort.abort();cancelAnimationFrame(frame);resize.disconnect();controls.dispose();renderer.domElement.removeEventListener('pointerdown',down);renderer.domElement.removeEventListener('pointerup',click);scene.traverse(obj=>{if(obj instanceof THREE.Mesh||obj instanceof THREE.Line||obj instanceof THREE.Points){obj.geometry.dispose();const mats=Array.isArray(obj.material)?obj.material:[obj.material];mats.forEach((m:THREE.Material)=>m.dispose());}});landTexture?.dispose();renderer.dispose();renderer.domElement.remove();};
+  },[props.records]);
   return <div className="globe-stage" ref={container} data-globe-state={state}>
     {state==='loading'&&<div className="globe-loading" role="status"><div className="loading-orbit"/><span>正在构建轨道视图</span></div>}
     {state==='fallback'&&<div className="globe-fallback"><div className="fallback-planet"/><span>当前设备未启用 WebGL<br/>可继续使用列表、时间轴与机会分析</span></div>}
