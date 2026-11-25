@@ -60,3 +60,15 @@
 .vi-site .precision-conditions{background:linear-gradient(125deg,var(--primary-on-light),color-mix(in srgb,var(--primary-on-light) 80%,var(--deep)))}
 .vi-site .vi-header-actions{gap:12px}.vi-site .vi-navigation{gap:22px}.app-shell .topbar{position:relative;z-index:60}.app-shell .topbar-right{gap:14px}
 @media(max-width:760px){.vi-palette-menu>summary{padding:7px}.vi-palette-menu>summary>span{display:none}.vi-palette-panel{width:290px;right:-88px;padding:20px}.app-shell .vi-palette-panel{right:0}.app-shell .topbar-right .vi-palette-menu{display:block}.vi-site .vi-header-actions{gap:8px}.vi-site .vi-mark-space{width:60px}}
+/* Product wordmark: LEO is foreground, PNT is the contextual VI primary. */
+.vi-site .vi-mark-space{width:120px;height:120px}.vi-site .vi-mark-space img{width:80px;height:80px}.vi-site .vi-product-name{font-size:40px;letter-spacing:-1px}.vi-site .vi-product-name small{font-size:18px;line-height:1.5;margin-top:10px;letter-spacing:2px}
+.vi-site .leopnt-pnt{color:var(--primary-on-light)}.vi-site.vi-dark .leopnt-pnt,.app-shell .leopnt-pnt{color:var(--primary-on-dark)}
+.app-shell .sidebar{width:264px;overflow-y:auto}.app-shell .brand{margin-left:0;margin-right:0}.app-shell .brand img{width:64px;height:64px;margin:16px}.app-shell .brand>span{font-size:30px}.app-shell .sidebar-bottom{padding-top:24px}
+@media(min-width:761px){.app-shell .main-frame{margin-left:264px}}
+@media(max-width:1100px) and (min-width:761px){.vi-site .vi-mark-space{width:102px;height:102px}.vi-site .vi-mark-space img{width:68px;height:68px}.vi-site .vi-product-name{font-size:35px}.vi-site .vi-product-name small{font-size:14px}}
+@media(max-width:760px){.vi-site .vi-mark-space{width:90px;height:90px}.vi-site .vi-mark-space img{width:60px;height:60px}.vi-site .vi-product-name{font-size:29px}.vi-site .vi-product-name small{font-size:12px;line-height:1.5;letter-spacing:1px;margin-top:8px}.vi-site .vi-header{padding-left:6px;padding-right:12px;gap:0 8px}.vi-site .vi-header-actions{gap:6px}}
+@media(max-width:380px){.vi-site .vi-mark-space{width:78px;height:78px}.vi-site .vi-mark-space img{width:52px;height:52px}.vi-site .vi-product-name{font-size:26px}.vi-site .vi-product-name small{font-size:11px}}
+@media(max-width:360px){.vi-site .vi-mark-space{width:72px;height:72px}.vi-site .vi-mark-space img{width:48px;height:48px}.vi-site .vi-product-name{font-size:24px}.vi-site .vi-theme-button,.vi-site .vi-mobile-toggle{width:30px;height:30px}.vi-site .vi-palette-menu>summary{padding:5px}.vi-site .vi-header-actions{gap:5px}}
+
+.app-shell .brand small{font-size:12px;line-height:1.6;letter-spacing:1px;margin-top:10px}
+@media(max-width:360px){.vi-site .vi-product-name small{font-size:10px}}

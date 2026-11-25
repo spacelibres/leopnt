@@ -21,4 +21,4 @@
 - [x] 验证公网页面、Webhook 拒绝非法请求、GitHub 真实推送交付与自动升级；DNS就绪后配置 HTTPS。
 - [x] 更新部署文档，patch升级与提交，核对远端版本。
 
-新增别名：leopnt.cn、www.leopnt.cn已指向VPS；www.leonet.net配置已准备，其DNS仍需域名管理者修改。公网浏览器预览工具超时，界面已在同构建本地验证，公网使用TLS/HTTP/API/静态资源验收。
+新增别名：leopnt.cn、www.leopnt.cn、www.leopnt.net均指向VPS，统一301到leopnt.net。公网浏览器预览工具超时，界面已在同构建本地验证，公网使用TLS/HTTP/API/静态资源验收。

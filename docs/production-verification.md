@@ -27,3 +27,7 @@
 - 浏览器公网远程预览接口反复超时；公网HTML、静态资源、API与TLS通过直接HTTP验证，未把预览工具超时当作站点故障。
 - 现有13项轨道/目录测试及新增3项Webhook测试通过，生产环境变量下也通过；类型检查、接收器编译、生产构建通过。
 - 仍只使用Starlink真实目录，未恢复网页或后台自动下载。
+
+## 后续自动发布与别名
+
+0.1.8提交f58b1a1505cd28482bd84c1ba954fc4647ad7b18再次通过真实push触发，GitHub返回202，VPS完成16项测试/构建并退出0，公网健康接口报告相同release。leopnt.cn与www.leopnt.cn证书验证成功，HTTPS路径 `/technology?from=alias` 均返回301至 `https://leopnt.net/technology?from=alias`。用户更正域名拼写后，配置只保留.net/.cn及各自www四个入口。

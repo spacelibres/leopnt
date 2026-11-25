@@ -27,7 +27,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
   return <div className="app-shell" data-vi-version="1.5.34" data-vi-palette={palette.name}>
     {open && <button className="mobile-scrim" aria-label="关闭导航" onClick={() => setOpen(false)} />}
     <aside className={`sidebar ${open ? 'open' : ''}`}>
-      <Link href="/" className="brand" onClick={() => setOpen(false)}><img src={themeAsset(palette.name,'icon-on-dark')} alt="spacelibre 官方轨道标志" /><span>LEOPNT<span className="brand-dot">.</span><small>低轨卫星机会导航</small></span></Link>
+      <Link href="/" className="brand" onClick={() => setOpen(false)}><img src={themeAsset(palette.name,'icon-on-dark')} alt="spacelibre 官方轨道标志" /><span>LEO<span className="leopnt-pnt">PNT</span><span className="brand-dot">.</span><small>低轨卫星机会导航</small></span></Link>
       <div className="workspace-label">探索 LEOPNT <span>LEO</span></div>
       <nav aria-label="主导航">{navigation.map(({href,label,icon:Icon}) => <Link key={href} href={href} className={`nav-link ${pathname === href ? 'active' : ''}`} onClick={() => setOpen(false)}><Icon size={19}/><span>{label}</span>{pathname === href && <ChevronRight size={14}/>}</Link>)}</nav>
       <div className="sidebar-bottom"><div className="orbit-mini"><Orbit size={27}/><span>让每一步行动<br/>拥有更精准的坐标。</span></div><Link href="/technology" className="sidebar-help">了解导航未来 <ArrowUpRight size={15}/></Link><div className="system-state"><span className="status-dot"/> Starlink 专用 <span>v{version}</span></div></div>

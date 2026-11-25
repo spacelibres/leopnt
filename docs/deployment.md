@@ -2,7 +2,7 @@
 
 正式地址：`https://leopnt.net`，`www.leopnt.net` 跳转到根域名。源仓库：`https://github.com/spacelibres/leopnt`，发布分支 `main`。
 
-别名配置包含 `leopnt.cn`、`www.leopnt.cn`、`www.leonet.net`，保留路径和查询参数并统一301跳转到正式地址。每个域名的 DNS 必须指向VPS，HTTPS证书才能签发。2026-11-25接入时，`www.leonet.net`仍指向13.248.169.48 / 76.223.54.146，需要域名管理者修改解析；Caddy将自动重试证书签发。
+别名配置包含 `leopnt.cn`、`www.leopnt.cn`、`www.leopnt.net`，保留路径和查询参数并统一301跳转到正式地址。四个入口均使用HTTPS；每个域名的 DNS 必须指向VPS，HTTPS证书才能签发。
 
 ## 服务结构
 
