@@ -18,12 +18,12 @@ npm run dev
 
 主源：[CelesTrak Starlink GP CSV](https://celestrak.org/NORAD/elements/gp.php?GROUP=starlink&FORMAT=csv)。CelesTrak 的 2026 年使用政策说明传统 TLE 下载停止，六位编号应使用现代格式，因此在线同步使用 OMM 字段，原生保留六位 NORAD 编号，仍支持真实 TLE 文件导入。
 
-主源错误时使用 [findstarlink 的 CelesTrak SupGP 镜像](https://github.com/findstarlink/data)，完整性以镜像内容为准，不能保证与 GP 主源同一时刻完全一致。界面、API 和导出均标注实际来源、目录指纹、获取时间、历元与源警告。
+手动同步时，主源错误可使用 [findstarlink 的 CelesTrak SupGP 镜像](https://github.com/findstarlink/data)，完整性以镜像内容为准，不能保证与 GP 主源同一时刻完全一致。API 和导出保留实际来源、目录指纹、获取时间、历元与源警告。页面不再显示常驻数据状态栏。
 
 随附 `data/starlink-snapshot.json` 为 2026-11-25 实际下载的 OMM JSON 快照：**11,196 颗 Starlink，含 606 个六位 NORAD 编号**。来源为 `https://data.findstarlink.com/celestrak.json`，原始内容 SHA-256 前16位 `e09f11e18570cf40`。获取时间 2026-11-25 11:51:35 UTC，历元范围 2026-11-24 01:12:41 UTC～2026-11-25 06:01:42 UTC。当时 CelesTrak GP 主源返回 HTTP503，未伪称直接主源下载。
 
 ```powershell
-# 同步目录，最多每两小时一次
+# 仅在需要更新时手动同步（相邻下载至少间隔两小时），随后重启服务
 npm run catalog:sync
 
 # 本机导入真实 TLE、OMM CSV 或 OMM JSON，仅接纳 Starlink
@@ -37,7 +37,7 @@ npm run catalog:sync -- --snapshot
 
 需要网络代理时，将 `.env.example` 复制为 `.env.local`，设置 `STARLINK_HTTP_PROXY=http://127.0.0.1:你的端口`。Next.js 与同步/导入 CLI 均读取 `.env.local`。`STARLINK_SOURCE=mirror` 可只读取镜像；默认 auto 优先主源。机器专用代理不提交到 Git。
 
-遵守 [CelesTrak 使用政策](https://celestrak.org/usage-policy.php)：两小时同步门限、在途请求合并、上游失败冷却、磁盘持久化、失败保留最后有效目录。数据加载顺序为磁盘缓存、随附真实快照、在线同步。快照会过期；没有有效目录时返回错误，绝不以合成数据代替。离线可分析快照对应的历史时段，不能把旧数据冒充当前星历。
+**网站不自动下载星历。** 前端只在页面首次载入时读取本机 API，没有定时刷新；后台只读取磁盘缓存或随附真实快照，缓存到期、打开页面、调用分析 API 和重启服务均不会触发外网下载。没有本地目录时返回明确错误。更新需要主动运行 `npm run catalog:sync`，随后重启服务；手动同步仍保留两小时最小间隔以遵守 [CelesTrak 使用政策](https://celestrak.org/usage-policy.php)。快照会过期，分析保留72小时星历门限，离线可分析快照对应的历史时段。
 
 ## 页面与 API
 

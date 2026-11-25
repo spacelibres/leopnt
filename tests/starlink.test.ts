@@ -50,10 +50,10 @@ test('计算边界校验拒绝过大工作量和无效时间频率',()=>{
   for(const change of [{lat:91},{start:NaN},{frequencyGHz:0},{minutes:1441},{stepSeconds:0}])assert.throws(()=>validateAnalysis({...base,...change},100));
   assert.throws(()=>validateAnalysis({...base,minutes:1440,stepSeconds:5},15000));
 });
-test('目录缓存合并在途请求，源错误保留旧数据并冷却两小时',async()=>{
-  let calls=0,now=1000,fail=false;
-  const store=new CatalogStore(async()=>{calls++;if(fail)throw new Error('upstream 503');return {id:'a',fetchedAt:new Date(now).toISOString(),source:'test',format:'OMM JSON',records:parseCatalog(JSON.stringify([omm])).records};},()=>now);
+test('本地目录即使超过两小时也不会触发重新加载，合并在途读取',async(t)=>{
+  let calls=0,now=Date.now();t.mock.method(Date,'now',()=>now);
+  const store=new CatalogStore(async()=>{calls++;return {id:'a',fetchedAt:'2020-01-01T00:00:00Z',source:'test',format:'OMM JSON',records:parseCatalog(JSON.stringify([omm])).records};});
   await Promise.all([store.get(),store.get()]);assert.equal(calls,1);
-  now+=7200001;fail=true;const old=await store.get();assert.equal(old.id,'a');assert.match(old.warning!,/503/);
-  await store.get();assert.equal(calls,2);
+  now+=7200001;
+  const old=await store.get();assert.equal(old.id,'a');assert.equal(calls,1);
 });
