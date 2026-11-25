@@ -1,4 +1,4 @@
-# leopnt · Starlink 机会导航计算
+# LEOPNT · Starlink 机会导航计算
 
 中文 Next.js + TypeScript + Three.js 网站。仅针对真实 Starlink 轨道根数进行 SGP4 传播、可见性、预测多普勒和条件化多星几何分析。旧合成星座已完全移除。
 
@@ -77,5 +77,5 @@ npx tsx scripts/verify-starlink.ts
 
 - [satellite.js](https://github.com/shashwatak/satellite-js)：SGP4与坐标变换，MIT。
 - [CelesTrak GP格式说明](https://celestrak.org/NORAD/documentation/gp-data-formats.php)、[findstarlink镜像](https://github.com/findstarlink/data)：真实轨道数据。
-- [spacelibre VI](https://github.com/spacelibres/vi)：批准的SVG几何与完整配色角色，白色字标保持单色，产品名称仍为leopnt。
+- [spacelibre VI](https://github.com/spacelibres/vi)：批准的SVG几何与完整配色角色，白色字标保持单色，产品名称为LEOPNT。
 - world-atlas / Natural Earth：公共领域地理轮廓，运行时本地加载；lucide-react：ISC图标。本站不是SpaceX或Starlink官方服务。
