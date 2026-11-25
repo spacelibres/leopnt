@@ -1,5 +1,11 @@
 # 更新记录
 
+## 0.1.8 — 2026-11-25
+
+- 增加leopnt.cn、www.leopnt.cn与www.leonet.net别名配置，统一跳转正式域名并保留路径。
+- 记录真实GitHub push自动构建与发布的生产验收证据；leonet.net证书仍取决于域名解析更新。
+- 补全生产部署、权限、运维和系统Node.js差异说明。
+
 ## 0.1.7 — 2026-11-25
 
 - 增加VPS独立用户/systemd/Caddy部署配置，正式域名HTTPS与www跳转，静态构建资源跨版本保留。

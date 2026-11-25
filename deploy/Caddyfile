@@ -19,7 +19,7 @@ leopnt.net {
     }
 }
 
-www.leopnt.net {
+www.leopnt.net, leopnt.cn, www.leopnt.cn, www.leonet.net {
     redir https://leopnt.net{uri} permanent
 }
 
