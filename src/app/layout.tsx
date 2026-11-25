@@ -2,6 +2,7 @@ import type { Metadata } from 'next';
 import { Shell } from '@/components/shell';
 import {CatalogProvider} from '@/components/catalog-provider';
 import {SITE_URL,SITE_DESCRIPTION} from '@/lib/site';
+import {ThemeProvider} from '@/components/theme-provider';
 import './globals.css';
 import './starlink.css';
 import './public-home.css';
@@ -19,5 +20,5 @@ export const metadata: Metadata = {
   icons: { icon: '/icon.svg' },
 };
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="zh-CN"><body><CatalogProvider><Shell>{children}</Shell></CatalogProvider></body></html>;
+  return <html lang="zh-CN"><body><ThemeProvider><CatalogProvider><Shell>{children}</Shell></CatalogProvider></ThemeProvider></body></html>;
 }

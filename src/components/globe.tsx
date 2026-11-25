@@ -3,9 +3,13 @@ import { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
 import {EARTH_RADIUS,scenePosition,surfacePosition,isFresh,type OrbitRecord} from '@/lib/starlink';
+import {useTheme} from './theme-provider';
 
 type Props={time:number;records:OrbitRecord[];selected:number|null;showOrbits:boolean;zoom:number;onSelect:(id:number)=>void;interactive?:boolean};
 export function Globe(props: Props) {
+  const {palette}=useTheme();
+  const colors=useRef(palette.colors);
+  colors.current=palette.colors;
   const container = useRef<HTMLDivElement>(null);
   const latest = useRef(props);
   const [state,setState] = useState<'loading'|'ready'|'fallback'>('loading');
@@ -30,7 +34,8 @@ export function Globe(props: Props) {
     const earth=new THREE.Mesh(new THREE.SphereGeometry(1,96,64),earthMaterial);scene.add(earth);
     const atmosphere=new THREE.Mesh(new THREE.SphereGeometry(1.035,64,48),new THREE.ShaderMaterial({
       vertexShader:'varying vec3 vNormal; varying vec3 vPosition; void main(){ vNormal=normalize(normalMatrix*normal); vec4 pos=modelViewMatrix*vec4(position,1.); vPosition=pos.xyz; gl_Position=projectionMatrix*pos; }',
-      fragmentShader:'varying vec3 vNormal; varying vec3 vPosition; void main(){float glow=pow(1.-abs(dot(normalize(vNormal),normalize(-vPosition))),3.); gl_FragColor=vec4(.08,.48,1.,glow*.65);}',
+      uniforms:{uGlow:{value:new THREE.Color(colors.current.primary)}},
+      fragmentShader:'uniform vec3 uGlow; varying vec3 vNormal; varying vec3 vPosition; void main(){float glow=pow(1.-abs(dot(normalize(vNormal),normalize(-vPosition))),3.); gl_FragColor=vec4(uGlow,glow*.65);}',
       transparent:true,blending:THREE.AdditiveBlending,depthWrite:false,
     }));scene.add(atmosphere);
     const grid=new THREE.Group();
@@ -49,7 +54,7 @@ export function Globe(props: Props) {
       }
       ctx.fillStyle='#164256';ctx.fill(paths,'evenodd');ctx.strokeStyle='#38839a';ctx.lineWidth=0.8;ctx.stroke(paths);
       ctx.save();ctx.clip(paths,'evenodd');ctx.fillStyle='#4693a6';for(let x=0;x<2048;x+=7)for(let y=0;y<1024;y+=7){ctx.globalAlpha=0.32;ctx.fillRect(x,y,1.4,1.4);}ctx.restore();
-      landTexture=new THREE.CanvasTexture(canvas);landTexture.colorSpace=THREE.SRGBColorSpace;earthMaterial.map=landTexture;earthMaterial.color.set(0xffffff);earthMaterial.needsUpdate=true;
+      landTexture=new THREE.CanvasTexture(canvas);landTexture.colorSpace=THREE.SRGBColorSpace;earthMaterial.map=landTexture;earthMaterial.color.set(colors.current.primary).lerp(new THREE.Color(colors.current.card),.7);earthMaterial.needsUpdate=true;
     }).catch((error)=>{if(error.name!=='AbortError')console.warn('本地地理轮廓未载入，使用网格地球。');});
     const records=props.records;
     const positions=new Float32Array(records.length*3);
@@ -68,10 +73,20 @@ export function Globe(props: Props) {
     };
     renderer.domElement.addEventListener('pointerdown',down);renderer.domElement.addEventListener('pointerup',click);
     const resize=new ResizeObserver(()=>{const {width,height}=host.getBoundingClientRect();if(width&&height){renderer.setSize(width,height);camera.aspect=width/height;camera.updateProjectionMatrix();}});resize.observe(host);
-    let frame=0,previousZoom=latest.current.zoom,lastTime=NaN,lastSelected:number|null=null,lastTrace=NaN;let last=0;
+    let frame=0,previousZoom=latest.current.zoom,lastTime=NaN,lastSelected:number|null=null,lastTrace=NaN;let last=0,lastPalette='';
     const animate=(now:number)=>{
       frame=requestAnimationFrame(animate);if(now-last<30)return;last=now;
       const p=latest.current;
+      if(lastPalette!==colors.current.primary){
+        const c=colors.current;
+        dots.material.color.set(c.primaryOnDark);
+        trace.material.color.set(c.accent);marker.material.color.set(c.accent);station.material.color.set(c.accent);
+        gridMat.color.set(c.primaryOnDark);light.color.set(c.surface);
+        atmosphere.material.uniforms.uGlow.value.set(c.primary);
+        earthMaterial.color.set(c.primary).lerp(new THREE.Color(c.card),.7);
+        renderer.domElement.dataset.palette=c.primary;
+        lastPalette=c.primary;
+      }
       if(p.zoom!==previousZoom){camera.position.multiplyScalar(Math.pow(.85,p.zoom-previousZoom));camera.position.clampLength(2.5,6.5);previousZoom=p.zoom;}
       if(p.time!==lastTime){records.forEach((r,i)=>{const pos=isFresh(r,p.time)?scenePosition(r,p.time):null;positions[i*3]=pos?pos[0]/EARTH_RADIUS:0;positions[i*3+1]=pos?pos[1]/EARTH_RADIUS:0;positions[i*3+2]=pos?pos[2]/EARTH_RADIUS:0;});dotsGeo.attributes.position.needsUpdate=true;lastTime=p.time;}
       const selected=records.find(r=>r.noradId===p.selected),selectedPosition=selected&&isFresh(selected,p.time)?scenePosition(selected,p.time):null;
