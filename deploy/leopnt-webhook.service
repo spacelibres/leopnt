@@ -1,0 +1,25 @@
+[Unit]
+Description=LEOPNT signed GitHub deployment webhook
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=simple
+User=leopnt-deploy
+Group=leopnt-deploy
+SupplementaryGroups=leopnt
+WorkingDirectory=/opt/leopnt/hooks
+Environment=HOME=/opt/leopnt/deployer
+Environment=NEXT_TELEMETRY_DISABLED=1
+EnvironmentFile=/etc/leopnt/webhook.env
+ExecStart=/usr/bin/node /opt/leopnt/hooks/webhook.mjs
+Restart=on-failure
+RestartSec=3
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/leopnt
+UMask=0022
+
+[Install]
+WantedBy=multi-user.target

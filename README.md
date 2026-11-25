@@ -86,4 +86,4 @@ npx tsx scripts/verify-starlink.ts
 
 采用 [spacelibre VI](https://vi.spacelibre.cn/) 官方源仓库 **1.5.34**、六套官方预设的完整16角色配色、批准的图标/单色字标与连续渐隐轨道构图。全站“配色”菜单支持电光蓝、极光薄荷、星云紫、太阳橙、深空青、未来青柠，选择在浏览器持久保存；首页和应用页支持深浅主题，工具区使用所选配色的深色布局；产品名称统一为大写 LEOPNT。
 
-官方素材随项目本地提供，页面运行不请求 VI 网站。维护时可手动运行 `npm run vi:sync`（只接受核对过的 1.5.34 版本），再执行 `npm run vi:prepare` 生成背景适配图标与轨道素材。来源、对比度和渲染检查见 `docs/vi-verification.md`。正式域名已写入代码，DNS、TLS 与公网部署需要在托管环境配置。
+官方素材随项目本地提供，页面运行不请求 VI 网站。维护时可手动运行 `npm run vi:sync`（只接受核对过的 1.5.34 版本），再执行 `npm run vi:prepare` 生成背景适配图标与轨道素材。来源、对比度和渲染检查见 `docs/vi-verification.md`。网站已部署至 https://leopnt.net ，www 域名跳转到根域名。源代码提交至 [GitHub](https://github.com/spacelibres/leopnt)，main 推送通过签名 Webhook 自动测试、构建并发布。部署与回滚结构见 [生产部署说明](docs/deployment.md)。

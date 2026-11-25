@@ -1,0 +1,27 @@
+[Unit]
+Description=LEOPNT navigation website
+After=network.target
+
+[Service]
+Type=simple
+User=leopnt
+Group=leopnt
+WorkingDirectory=/opt/leopnt/current
+Environment=NODE_ENV=production
+Environment=NEXT_TELEMETRY_DISABLED=1
+Environment=NODE_OPTIONS=--max-old-space-size=640
+EnvironmentFile=/opt/leopnt/current/.release.env
+ExecStart=/usr/bin/node node_modules/next/dist/bin/next start --hostname 127.0.0.1 --port 3200
+Restart=on-failure
+RestartSec=3
+TimeoutStopSec=20
+KillSignal=SIGTERM
+NoNewPrivileges=true
+PrivateTmp=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/opt/leopnt/shared/cache /opt/leopnt/releases
+UMask=0027
+
+[Install]
+WantedBy=multi-user.target

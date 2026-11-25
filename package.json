@@ -1,6 +1,6 @@
 {
   "name": "leopnt",
-  "version": "0.1.6",
+  "version": "0.1.7",
   "private": true,
   "engines": {
     "node": ">=22.19.0"
@@ -14,7 +14,8 @@
     "catalog:sync": "tsx scripts/catalog.ts sync",
     "catalog:import": "tsx scripts/catalog.ts import",
     "vi:sync": "tsx scripts/sync-vi.mts",
-    "vi:prepare": "node scripts/prepare-vi.mjs"
+    "vi:prepare": "node scripts/prepare-vi.mjs",
+    "webhook:build": "tsc -p deploy/tsconfig.json"
   },
   "dependencies": {
     "lucide-react": "^1.80.0",
