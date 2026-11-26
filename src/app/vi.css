@@ -87,3 +87,9 @@
 @media(prefers-reduced-motion:reduce){.world-mobile{display:none}.world-static{display:block}.world-hover,.world-spacecraft,.world-rotor,.world-flow{animation:none!important}}
 @media(max-width:560px){.vi-site .mobility-world{top:350px;right:-4%;width:108%;height:420px}.mobility-world .world-labels{font-size:26px}.mobility-world .world-labels text:first-child{font-size:22px;letter-spacing:1px}}
 .vi-site .future-hero:has(.mobility-world) .hero-vi-orbit{opacity:.06}
+.vi-site .simple-navigation{width:62%;right:-1%;top:0;height:100%;opacity:1}.simple-navigation .world-rotor{animation:none}.simple-signal{animation:world-flow 9s linear infinite}.vi-site .future-hero:has(.simple-navigation) .hero-vi-orbit{display:none}
+@media(max-width:1100px){.vi-site .simple-navigation{width:74%;right:-14%}}
+@media(max-width:760px){.vi-site .simple-navigation{width:92%;right:-26%}}
+@media(max-width:560px){.vi-site .simple-navigation{top:350px;right:0;width:100%;height:400px}}
+@media(prefers-reduced-motion:reduce){.simple-signal{animation:none!important}}
+@media(max-width:560px){.vi-site .future-hero:has(.simple-navigation){min-height:740px}.vi-site .simple-navigation{top:300px;height:380px}}
