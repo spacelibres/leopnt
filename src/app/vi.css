@@ -72,24 +72,3 @@
 
 .app-shell .brand small{font-size:12px;line-height:1.6;letter-spacing:1px;margin-top:10px}
 @media(max-width:360px){.vi-site .vi-product-name small{font-size:10px}}
-.navigation-vision{pointer-events:none;contain:layout paint;display:flex;align-items:center;justify-content:center}.navigation-vision>svg{display:block;width:100%;height:100%;overflow:visible}.vision-traveler{animation:vision-orbit 18s linear infinite;stroke-dashoffset:0}.vision-trail{opacity:.32}.vision-pulse{transform-origin:520px 540px;animation:vision-signal 6s ease-out infinite;opacity:0}.vision-stars{animation:vision-shimmer 8s ease-in-out infinite alternate}.vision-coordinate{opacity:.7}.vi-site .navigation-vision{width:70%;right:-8%;top:0;height:100%;opacity:1}.vision-core{filter:drop-shadow(0 0 18px color-mix(in srgb,var(--primary) 65%,transparent))}
-@keyframes vision-orbit{to{stroke-dashoffset:-100}}@keyframes vision-signal{0%{transform:scale(.35);opacity:.65}100%{transform:scale(3.6);opacity:0}}@keyframes vision-shimmer{from{opacity:.45}to{opacity:1}}
-@media(max-width:1100px){.vi-site .navigation-vision{width:82%;right:-20%;opacity:.85}.vision-coordinate{opacity:.5}}
-@media(max-width:760px){.vi-site .navigation-vision{right:-30%;width:100%;opacity:.6}}
-@media(max-width:560px){.vi-site .navigation-vision{top:350px;right:-28%;width:156%;height:440px;opacity:1}.vision-coordinate{display:none}}
-@media(prefers-reduced-motion:reduce){.vision-traveler,.vision-pulse,.vision-stars{animation:none!important}.vision-pulse{opacity:.18;transform:scale(1.5)}.vision-pulse:nth-child(2){transform:scale(2.3)}.vision-pulse:nth-child(3){transform:scale(3.1)}}
-/* A tangible, connected air / land / sea world. All colors use VI roles. */
-.vi-site .mobility-world{width:74%;right:-7%;top:-1%;height:105%;opacity:1}.mobility-world .world-labels{paint-order:stroke;stroke:var(--deep);stroke-width:5px;stroke-linejoin:round}.world-mobile{offset-distance:0;offset-rotate:auto;animation:world-travel 30s linear infinite}.world-hover{animation:world-hover 7s ease-in-out infinite}.world-rotor{animation:world-rotor .8s linear infinite}.world-flow{animation:world-flow 22s linear infinite}.world-spacecraft{animation:world-spacecraft 15s ease-in-out infinite}.world-static{display:none}.vi-site .future-hero .hero-vi-orbit{opacity:.3}
-@keyframes world-travel{to{offset-distance:100%}}@keyframes world-hover{0%,100%{transform:translateY(-4px)}50%{transform:translateY(5px)}}@keyframes world-rotor{to{transform:rotate(360deg)}}@keyframes world-flow{to{stroke-dashoffset:-160}}@keyframes world-spacecraft{0%,100%{transform:translateY(0)}50%{transform:translateY(-8px)}}
-@media(max-width:1100px){.vi-site .mobility-world{width:88%;right:-21%;opacity:.9}}
-@media(max-width:760px){.vi-site .mobility-world{width:105%;right:-34%;opacity:.7}}
-@media(max-width:560px){.vi-site .mobility-world{top:345px;right:-20%;width:140%;height:455px;opacity:1}.mobility-world .world-labels{font-size:20px}.mobility-world .world-labels text:last-child{display:none}}
-@media(prefers-reduced-motion:reduce){.world-mobile{display:none}.world-static{display:block}.world-hover,.world-spacecraft,.world-rotor,.world-flow{animation:none!important}}
-@media(max-width:560px){.vi-site .mobility-world{top:350px;right:-4%;width:108%;height:420px}.mobility-world .world-labels{font-size:26px}.mobility-world .world-labels text:first-child{font-size:22px;letter-spacing:1px}}
-.vi-site .future-hero:has(.mobility-world) .hero-vi-orbit{opacity:.06}
-.vi-site .simple-navigation{width:62%;right:-1%;top:0;height:100%;opacity:1}.simple-navigation .world-rotor{animation:none}.simple-signal{animation:world-flow 9s linear infinite}.vi-site .future-hero:has(.simple-navigation) .hero-vi-orbit{display:none}
-@media(max-width:1100px){.vi-site .simple-navigation{width:74%;right:-14%}}
-@media(max-width:760px){.vi-site .simple-navigation{width:92%;right:-26%}}
-@media(max-width:560px){.vi-site .simple-navigation{top:350px;right:0;width:100%;height:400px}}
-@media(prefers-reduced-motion:reduce){.simple-signal{animation:none!important}}
-@media(max-width:560px){.vi-site .future-hero:has(.simple-navigation){min-height:740px}.vi-site .simple-navigation{top:300px;height:380px}}

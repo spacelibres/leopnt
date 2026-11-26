@@ -7,7 +7,7 @@ type Context={catalog:CatalogPayload|null;loading:boolean;error:string};
 const CatalogContext=createContext<Context>({catalog:null,loading:true,error:''});
 export function CatalogProvider({children}:{children:React.ReactNode}){
   const pathname=usePathname();
-  const needsCatalog=['/console','/opportunities','/docs'].includes(pathname);
+  const needsCatalog=['/','/console','/opportunities','/docs'].includes(pathname);
   const [catalog,setCatalog]=useState<CatalogPayload|null>(null),[loading,setLoading]=useState(true),[error,setError]=useState('');
   useEffect(()=>{
     if(!needsCatalog||catalog)return;
