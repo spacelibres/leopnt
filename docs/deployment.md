@@ -4,6 +4,28 @@
 
 别名配置包含 `leopnt.cn`、`www.leopnt.cn`、`www.leopnt.net`，保留路径和查询参数并统一301跳转到正式地址。四个入口均使用HTTPS；每个域名的 DNS 必须指向VPS，HTTPS证书才能签发。
 
+以下15个额外域名同样通过HTTPS保留路径和查询参数，301跳转至 `https://leopnt.net`：
+
+```text
+www.spacelibre.cn
+www.navsop.cn
+www.navsop.com.cn
+www.starlinkpnt.com
+www.opspnt.com.cn
+www.opspnt.cn
+www.opspnt.com
+www.sop-pnt.com
+www.soppnt.net
+www.soppnt.com.cn
+www.soppnt.cn
+www.soppnt.com
+www.leo-pnt.com.cn
+www.leo-pnt.net
+www.leopnet.com.cn
+```
+
+Caddy 自动签发并续期这些域名的证书。修改 `deploy/Caddyfile` 后，管理员须安装到 `/etc/caddy/leopnt.Caddyfile`，执行 `caddy validate --config /etc/caddy/Caddyfile` 验证通过，再执行 `systemctl reload caddy`；网站的自动发布不会自行替换服务器配置。
+
 ## 服务结构
 
 - VPS 使用 Caddy 提供 HTTPS，保留服务器上的其他虚拟主机；配置见 `deploy/Caddyfile`。

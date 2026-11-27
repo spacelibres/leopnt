@@ -23,6 +23,25 @@ www.leopnt.net, leopnt.cn, www.leopnt.cn {
     redir https://leopnt.net{uri} permanent
 }
 
+# Additional public aliases; Caddy manages HTTPS and certificate renewal.
+www.spacelibre.cn,
+www.navsop.cn,
+www.navsop.com.cn,
+www.starlinkpnt.com,
+www.opspnt.com.cn,
+www.opspnt.cn,
+www.opspnt.com,
+www.sop-pnt.com,
+www.soppnt.net,
+www.soppnt.com.cn,
+www.soppnt.cn,
+www.soppnt.com,
+www.leo-pnt.com.cn,
+www.leo-pnt.net,
+www.leopnet.com.cn {
+    redir https://leopnt.net{uri} permanent
+}
+
 http://176.122.167.230 {
     encode zstd gzip
     handle /_leopnt/github {
