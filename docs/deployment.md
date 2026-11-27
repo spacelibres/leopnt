@@ -21,7 +21,7 @@ www.soppnt.cn
 www.soppnt.com
 www.leo-pnt.com.cn
 www.leo-pnt.net
-www.leopnet.com.cn
+www.leopnt.com.cn
 ```
 
 Caddy 自动签发并续期这些域名的证书。修改 `deploy/Caddyfile` 后，管理员须安装到 `/etc/caddy/leopnt.Caddyfile`，执行 `caddy validate --config /etc/caddy/Caddyfile` 验证通过，再执行 `systemctl reload caddy`；网站的自动发布不会自行替换服务器配置。
