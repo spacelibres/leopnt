@@ -31,7 +31,7 @@ export function ThemeProvider({children}:{children:React.ReactNode}){
 
 export function PalettePicker(){
   const {palette,setPalette}=useTheme();
-  return <details className="vi-palette-menu"><summary aria-label="选择网站配色"><Palette size={18}/><span>配色</span></summary><div className="vi-palette-panel"><strong>属于你的低轨视野</strong><p>六种色彩，同一片天空。</p><div className="vi-palette-options">{presets.map((item,index)=><button key={item.name} aria-label={`切换${labels[index]}配色`} aria-pressed={palette.name===item.name} onClick={()=>setPalette(index)}><span className="palette-sample" style={{background:`linear-gradient(135deg,${item.colors.primary} 0 45%,${item.colors.secondary} 45% 75%,${item.colors.accent} 75%)`}}/>{labels[index]}{palette.name===item.name&&<Check size={14}/>}</button>)}</div></div></details>;
+  return <details className="vi-palette-menu" onPointerLeave={event=>{if(event.pointerType==='mouse')event.currentTarget.open=false;}}><summary aria-label="选择网站配色"><Palette size={18}/><span>配色</span></summary><div className="vi-palette-panel"><strong>属于你的低轨视野</strong><p>六种色彩，同一片天空。</p><div className="vi-palette-options">{presets.map((item,index)=><button key={item.name} aria-label={`切换${labels[index]}配色`} aria-pressed={palette.name===item.name} onClick={()=>setPalette(index)}><span className="palette-sample" style={{background:`linear-gradient(135deg,${item.colors.primary} 0 45%,${item.colors.secondary} 45% 75%,${item.colors.accent} 75%)`}}/>{labels[index]}{palette.name===item.name&&<Check size={14}/>}</button>)}</div></div></details>;
 }
 
 export function OrbitArtwork({className}:{className:string}){

@@ -72,3 +72,5 @@
 
 .app-shell .brand small{font-size:12px;line-height:1.6;letter-spacing:1px;margin-top:10px}
 @media(max-width:360px){.vi-site .vi-product-name small{font-size:10px}}
+/* Keep the trigger-to-panel gap inside the pointer hit area. */
+.vi-palette-panel::before{content:"";position:absolute;left:0;right:0;top:-18px;height:18px}
