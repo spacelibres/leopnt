@@ -24,6 +24,8 @@ www.leo-pnt.net
 www.leopnt.com.cn
 ```
 
+`leopnt.com.cn` 根域名也单独配置HTTPS及相同跳转。根域名和 `www.leopnt.com.cn` 两个入口分别由 Caddy 管理证书。
+
 Caddy 自动签发并续期这些域名的证书。修改 `deploy/Caddyfile` 后，管理员须安装到 `/etc/caddy/leopnt.Caddyfile`，执行 `caddy validate --config /etc/caddy/Caddyfile` 验证通过，再执行 `systemctl reload caddy`；网站的自动发布不会自行替换服务器配置。
 
 ## 服务结构

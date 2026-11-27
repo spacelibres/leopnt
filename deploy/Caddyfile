@@ -38,7 +38,8 @@ www.soppnt.cn,
 www.soppnt.com,
 www.leo-pnt.com.cn,
 www.leo-pnt.net,
-www.leopnt.com.cn {
+www.leopnt.com.cn,
+leopnt.com.cn {
     redir https://leopnt.net{uri} permanent
 }
 
